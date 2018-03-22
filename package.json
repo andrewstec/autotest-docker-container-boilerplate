@@ -1,0 +1,60 @@
+{
+  "name": "express-typescript-starter",
+  "version": "0.1.0",
+  "description": "A helper for Docker container AutoTest scripts",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run build && npm run watch",
+    "build": "npm run build-ts && npm run tslint",
+    "parse": "NODE_TLS_REJECT_UNAUTHORIZED='0' node build/controllers/ScriptHelper",
+    "http-send-result": "NODE_TLS_REJECT_UNAUTHORIZED='0' node build/controllers/ScriptController HttpSendResult",
+    "http-send-jacoco": "NODE_TLS_REJECT_UNAUTHORIZED='0' node build/controllers/ScriptController HttpSendJacoco",
+    "create-result-record": "NODE_TLS_REJECT_UNAUTHORIZED='0' node build/controllers/ScriptController CreateResultRecord",
+    "test": " TEST_MODE=1 SHA_INPUT='/output/docker_sha.json' STDIO_INPUT='/output/stdio.txt' jest --forceExit",
+    "build-ts": "tsc",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
+  },
+  "jest": {
+    "globals": {
+      "__TS_CONFIG__": "tsconfig.json"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": [
+      "**/test/**/*.test.(ts|js)"
+    ],
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "@types/request-promise-native": "^1.0.10",
+    "archiver": "^2.1.0",
+    "dotenv": "^2.0.0",
+    "jszip": "^3.1.5",
+    "lodash": "^4.17.4",
+    "request": "^2.78.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^2.0.20",
+    "@types/jest": "^21.1.5",
+    "@types/lodash": "^4.14.63",
+    "@types/node": "^7.0.12",
+    "@types/request": "0.0.45",
+    "@types/supertest": "^2.0.0",
+    "jest": "^22.4.3",
+    "supertest": "^2.0.1",
+    "ts-jest": "^21.1.4",
+    "tslint": "^5.0.0",
+    "typescript": "^2.4.0"
+  }
+}
