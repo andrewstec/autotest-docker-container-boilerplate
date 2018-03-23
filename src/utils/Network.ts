@@ -13,7 +13,7 @@ if (typeof process.env.IS_CONTAINER_LIVE === 'undefined') {
   // mac development mode with docker
   apiPath = 'https://portal-dev.cs.ubc.ca:1210';
 } else {
-  apiPath = 'https://portal.cs.ubc.ca:1' + process.env.COURSE_NUM;
+  apiPath = 'https://portal.cs.ubc.ca:1210';
 }
 
 console.log('Network::apiPath() Determined API Path: ' + apiPath);
