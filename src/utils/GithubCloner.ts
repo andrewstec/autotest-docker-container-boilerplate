@@ -25,11 +25,13 @@ export default class GithubCloner {
         .then((process: any) => {
           console.log('GithubCloner.ts::cloneStudentRepo() - STDIOUT: ', process.stdout);
           console.log('GithubCloner.ts::cloneStudentRepo() - STDIERR: ', process.stderr);
-          if (process.stderr === '' && process.stderr !== '') {
-            fulfill(true);
-          } else {
-            reject(false);
-          }
+          // NEEDED FIX: ALWAYS THROWS ERROR EVEN IF IT IS SUCCESSFUL:
+          // if (process.stderr === '' && process.stderr !== '') {
+          //   fulfill(true);
+          // } else {
+          //   reject(false);
+          // }
+          fulfill(true);
         })
         .catch((err: any) => {
           fulfill(true);
