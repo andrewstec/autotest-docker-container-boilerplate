@@ -47,7 +47,13 @@ export default class TestRunner {
     const HELLO_WORLD = 'hello world!';
     const fileReader: FileReader = new FileReader();
     const folderIndex = await fileReader.readFolderIndex(this.studentRepo);
-    const mainTxt = await fileReader.readTextFile(this.studentRepo + '/main.txt');
+    const mainTxt = await fileReader.readTextFile(this.studentRepo + '/main.txt')
+      .catch((err) => {
+        if (err) {
+          console.log(err);
+          console.log('main.txt does not exist.');
+        }
+      });
     let fileExists: boolean = false;
     let helloWorldExists: boolean = false;
 
@@ -60,7 +66,7 @@ export default class TestRunner {
         }
       });
 
-      if (mainTxt.toUpperCase().indexOf(HELLO_WORLD.toUpperCase()) > -1) {
+      if (typeof mainTxt !== 'undefined' && mainTxt.toUpperCase().indexOf(HELLO_WORLD.toUpperCase()) > -1) {
         helloWorldExists = true;
       }
 
