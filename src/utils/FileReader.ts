@@ -1,6 +1,6 @@
 import * as fs from 'fs';
-import { DockerSHA } from '../models/DockerSHA';
-import { ResultRecord } from '../models/ResultRecord';
+import DockerSHA from '../models/DockerSHA';
+import ResultRecord from '../models/ResultRecord';
 const MOCK_STDIO: string = '/mockData/stdio.txt';
 const MOCK_DOCKER_SHA: string = '/mockData/docker_SHA.json';
 const REPORT_OUTPUT: string = '/output/report.json';
@@ -25,35 +25,16 @@ export default class FileReader {
     });
   }
 
-  public async readJSON(jsonPath: string): Promise<JSON>  {
-    console.log('FileReader::readDockerInput() Reading filename ' + shaPath + ' - START');
+  public async readJSON(jsonPath: string): Promise<Object>  {
+    console.log('FileReader::readDockerInput() Reading filename ' + jsonPath + ' - START');
     return new Promise<DockerSHA>((fulfill, reject) => {
       fs.readFile(jsonPath, 'utf8', (err, data) => {
         if (err) {
-          console.log('FileReader:: readDockerInput() ERROR reading ' + shaPath + ' from container: ' + err);
+          console.log('FileReader:: readDockerInput() ERROR reading ' + jsonPath + ' from container: ' + err);
           reject(err);
         }
-        console.log('FileReader::readDockerInput() SUCCESS reading ' + shaPath + ' from container - END');
-        // console.log('FileReader::readDockerInput() DATA: ', JSON.stringify(data)); // FOR DEBUGGING
-        const json = (JSON.parse(data) as JSON);
-        return fulfill(json);
-      });
-    });
-  }
-
-
-  public async readDefaultResultRecord(shaPath: string): Promise<DockerSHA>  {
-    console.log('FileReader::readDockerInput() Reading filename ' + shaPath + ' - START');
-    return new Promise<DockerSHA>((fulfill, reject) => {
-      fs.readFile(shaPath, 'utf8', (err, data) => {
-        if (err) {
-          console.log('FileReader:: readDockerInput() ERROR reading ' + shaPath + ' from container: ' + err);
-          reject(err);
-        }
-        console.log('FileReader::readDockerInput() SUCCESS reading ' + shaPath + ' from container - END');
-        // console.log('FileReader::readDockerInput() DATA: ', JSON.stringify(data)); // FOR DEBUGGING
-        const dockerInput = (JSON.parse(data) as DockerSHA);
-        return fulfill(dockerInput);
+        console.log('FileReader::readDockerInput() SUCCESS reading ' + jsonPath + ' from container - END');
+        return fulfill(JSON.parse(data));
       });
     });
   }
@@ -73,16 +54,16 @@ export default class FileReader {
   }
 
 
-  public async readTextFile(textfilePath: string): Promise<DockerSHA>  {
+  public async readTextFile(textfilePath: string): Promise<string>  {
     console.log('FileReader::readTextInput() Reading filename ' + textfilePath + ' - START');
-    return new Promise<DockerSHA>((fulfill, reject) => {
+    return new Promise<string>((fulfill, reject) => {
       fs.readFile(textfilePath, 'utf8', (err, data) => {
         if (err) {
           console.log('FileReader:: readDockerInput() ERROR reading ' + textfilePath + ' from container: ' + err);
           reject(err);
         }
         console.log('FileReader::readDockerInput() SUCCESS reading ' + textfilePath + ' from container - END');
-        return fulfill(textfilePath);
+        return fulfill(data);
       });
     });
   }

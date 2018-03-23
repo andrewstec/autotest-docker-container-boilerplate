@@ -4,6 +4,7 @@ export default interface DockerSHA {
   deliverableInfo: DockerDeliverableInfo;
   container: DockerInputContainer;
   githubOrg: string;
+  githubKeys: GithubKeys;
   whitelistedServers: string;
   allowDNS: number;
   stdioRef: string;
@@ -39,6 +40,11 @@ export interface DockerDeliverableInfo {
   solutionsUrl: string;
 }
 
+export interface GithubKeys {
+  delivKeys: string;
+  solutionsKey: string;
+  orgKey: string;
+}
 export interface DockerInputContainer {
   branch: string;
   suiteVersion: string;

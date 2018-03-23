@@ -2,10 +2,13 @@ import { ZipFile } from '../utils/Archiver';
 import FeedbackGenerator from '../business/FeedbackGenerator';
 import DockerSHA from '../models/DockerSHA';
 import ResultRecord from '../models/ResultRecord';
+import GithubCloner from '../utils/GithubCloner';
+import TestRunner from '../business/tests/TestRunner';
 import FileReader from '../utils/FileReader';
 import HtmlGenerator from '../business/HtmlGenerator';
 import Network from '../utils/Network';
 
+const STUDENT_REPO_PATH = '/studentRepo/';
 const DOCKER_SHA = '/output/docker_SHA.json';
 const RESULT_RECORD = '/output/result_record.json';
 const RUNTIME_CMD = process.argv[2];
@@ -21,48 +24,41 @@ class ScriptController {
   public resultRecord: ResultRecord;
 
   constructor(dockerInputPath: string) {
-    this.runGrader(RUNTIME_CMD);
+    this.runGrader();
   }
 
-  public async runGrader(runtimeCMD: string): Promise<any> {
+  public async runGrader() {
+    console.log('ScriptController::validateAssignment() - start');
+    this.readContainerInput()
+      .then((files) => {
+        // Step #1. Read the Container Input DockerSHA and ResultRecord Files;
+        console.log('ScriptController::runGrader() STEP 1 - start');
+        that.resultRecord = files[0] as ResultRecord;
+        that.dockerSHA = files[1] as DockerSHA;
+      })
+      .then(() => {
+        // Step #2. Init the Repositories on the Docker Container system;
+        console.log('ScriptController::runGrader() STEP 2 - start');
+        return new GithubCloner(that.dockerSHA).cloneStudentRepo(STUDENT_REPO_PATH);
+      })
+      .then(() => {
+        // Step #3. If the Student Code was cloned successfully, grade it
+        console.log('ScriptController::runGrader() STEP 3 - start');
+        return new TestRunner().gradeStudentWork();
+      })
+      .catch((err) => {
+        console.log('ScriptController::validateAssignment() ERROR ' + err);
+      });
+
     const that = this;
-    return this.readContainerInput().then((files) => {
-
-      that.resultRecord = files[0] as ResultRecord;
-      that.dockerSHA = files[1] as DockerSHA;
-
-      switch (runtimeCMD) {
-        case START_GRADING: {
-          console.log('ScriptController::START_GRADING - START');
-
-            // DEFINITELY WANT TO IMPLEMENT AND USE
-            //   return Network.sendStaticHtml(zipFile, makeDir())
-            //     .then((data: any) => {
-            //       if (typeof data.response !== 'undefined' && data.response.htmlStaticPath !== 'undefined') {
-            //         console.log('<STATIC_HTML>');
-            //         console.log(data.response.htmlStaticPath);
-            //         console.log('</STATIC_HTML exitcode=0, ' + 'completed=2999-01-02T16:31:31.504Z, duration=0s>');
-            //       } else {
-            //         console.log('<STATIC_HTML>');
-            //         console.log(data.response.error);
-            //         console.log('</STATIC_HTML exitcode=1, ' + 'completed=2999-01-02T16:31:31.504Z, duration=0s>');
-            //       }
-            //     });
-            // })
-            // .catch((err: any) => {
-            //   console.log('ScriptController:: zipJacocoReport() ERROR ' + err);
-            // });
-        }
-      }
-
-    });
   }
 
   private zipHtmlReport(): Promise<ZipFile> {
     return new HtmlGenerator().zip();
   }
 
-  private readContainerInput(): Promise<any> {
+  private readContainerInput(): Promise<any[]> {
+    const that = this;
     const fileReader: FileReader = new FileReader();
     const file0 = fileReader.readJSON(RESULT_RECORD);
     const file1 = fileReader.readJSON(DOCKER_SHA);

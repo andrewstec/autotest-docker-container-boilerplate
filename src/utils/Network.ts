@@ -1,5 +1,5 @@
-import { ResultRecordContainer, ResultRecordPayload } from '../interfaces/ResultRecord.Interface';
-import ResultRecord from '../models/autotest/ResultRecord';
+import { ResultRecordResponseContainer, ResultRecordResponse, ResultRecordPayload } from '../interfaces/ResultRecord';
+import ResultRecord from '../models/ResultRecord';
 import { ZipFile, ZipFileContainer } from './Archiver';
 
 const rp = require('request-promise-native');
@@ -49,7 +49,7 @@ export default class Network {
     });
   }
 
-  public static sendResultRecord(resultContainer: ResultRecordContainer): Promise<ResultRecord> {
+  public static sendResultRecord(resultRecordPayload: ResultRecordPayload): Promise<ResultRecordResponse> {
     console.log('Network::sendResultRecord() - START');
     const options = {
       method:  'POST',
@@ -57,13 +57,13 @@ export default class Network {
       headers: {
         Accept: 'application/json'
       },
-      body: resultContainer,
+      body: resultRecordPayload,
       json:    true
     };
 
-    return rp(options).then((response: ResultRecord) => {
-      console.log('Network::sendResultRecord() MongoDB Response: ', response);
-      return response;
+    return rp(options).then((data: ResultRecordResponseContainer ) => {
+      console.log('Network::sendResultRecord() MongoDB Response: ', data.response);
+      return data.response;
     })
     .catch((err: any) => {
       console.log('Network::sendResultRecord() ERROR ' + err);

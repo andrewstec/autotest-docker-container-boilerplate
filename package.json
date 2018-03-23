@@ -36,11 +36,14 @@
     "testEnvironment": "node"
   },
   "dependencies": {
+    "@types/mongodb": "^3.0.9",
     "@types/request-promise-native": "^1.0.10",
     "archiver": "^2.1.0",
+    "child-process-promise": "^2.2.1",
     "dotenv": "^2.0.0",
     "jszip": "^3.1.5",
     "lodash": "^4.17.4",
+    "mongodb": "^3.0.4",
     "request": "^2.78.0",
     "request-promise-native": "^1.0.5"
   },
