@@ -9,7 +9,7 @@ import FileReader from '../utils/FileReader';
 import HtmlGenerator from '../business/HtmlGenerator';
 import Network from '../utils/Network';
 
-const STUDENT_REPO_PATH = '/output/studentRepo';
+const STUDENT_REPO_PATH = '/studentRepo';
 const DOCKER_SHA = '/output/docker_SHA.json';
 const RESULT_RECORD = '/output/result_record.json';
 const RUNTIME_CMD = process.argv[2];
