@@ -8,10 +8,10 @@ let apiPath: string;
 console.log('Network::apiPath() IS_CONTAINER_LIVE: ' + process.env.IS_CONTAINER_LIVE);
 
 if (typeof process.env.IS_CONTAINER_LIVE === 'undefined') {
-  apiPath = 'https://localhost:1210';
+  apiPath = 'https://portal-dev.cs.ubc.ca:1210';
 } else if (String(process.env.IS_CONTAINER_LIVE).indexOf('0') > -1) {
   // mac development mode with docker
-  apiPath = 'https://localhost:1210';
+  apiPath = 'https://portal-dev.cs.ubc.ca:1210';
 } else {
   apiPath = 'https://portal.cs.ubc.ca:1' + process.env.COURSE_NUM;
 }
