@@ -11,11 +11,7 @@
   "scripts": {
     "start": "npm run build && npm run watch",
     "build": "npm run build-ts && npm run tslint",
-    "parse": "NODE_TLS_REJECT_UNAUTHORIZED='0' node build/controllers/ScriptHelper",
-    "http-send-result": "NODE_TLS_REJECT_UNAUTHORIZED='0' node build/controllers/ScriptController HttpSendResult",
-    "http-send-jacoco": "NODE_TLS_REJECT_UNAUTHORIZED='0' node build/controllers/ScriptController HttpSendJacoco",
-    "create-result-record": "NODE_TLS_REJECT_UNAUTHORIZED='0' node build/controllers/ScriptController CreateResultRecord",
-    "test": " TEST_MODE=1 SHA_INPUT='/output/docker_sha.json' STDIO_INPUT='/output/stdio.txt' jest --forceExit",
+    "grade": "NODE_TLS_REJECT_UNAUTHORIZED='0' node build/controllers/GradingController",
     "build-ts": "tsc",
     "tslint": "tslint -c tslint.json -p tsconfig.json"
   },

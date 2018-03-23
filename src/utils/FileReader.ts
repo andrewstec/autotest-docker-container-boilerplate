@@ -39,10 +39,10 @@ export default class FileReader {
     });
   }
 
-  public async readFolderIndex(folderPath: string): Promise<fs.Stats>  {
+  public async readFolderIndex(folderPath: string): Promise<string[]>  {
     console.log('FileReader::readTextInput() Reading filename ' + folderPath + ' - START');
-    return new Promise<fs.Stats>((fulfill, reject) => {
-      fs.stat(folderPath, (err, data) => {
+    return new Promise<string[]>((fulfill, reject) => {
+      fs.readdir(folderPath, (err, data) => {
         if (err) {
           console.log('FileReader:: readDockerInput() ERROR reading ' + folderPath + ' from container: ' + err);
           reject(err);

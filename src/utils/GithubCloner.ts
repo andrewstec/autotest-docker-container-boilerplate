@@ -30,6 +30,9 @@ export default class GithubCloner {
           } else {
             reject(false);
           }
+        })
+        .catch((err: any) => {
+          fulfill(true);
         });
     });
   }
