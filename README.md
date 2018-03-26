@@ -1,7 +1,7 @@
 # autotest-docker-container-boilerplate
 Docker Container AutoTest Example
 
-Boilerplate Docker container image for `AutoTest application found at `https://github.com/ubccpsc/autotest`.
+Boilerplate Docker container image for `AutoTest application found at` https://github.com/ubccpsc/autotest.
 
 Steps to integrate (Admin permissions required):
 
