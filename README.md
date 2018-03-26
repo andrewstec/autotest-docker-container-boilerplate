@@ -5,7 +5,7 @@ Boilerplate Docker container image for `AutoTest application found at` https://g
 
 Steps to integrate (Admin permissions required):
 
-1) Add this repository address to the Docker Repo property on the `Deliverable Configuration` or `Course Configuration` views.
+1) Add this repository address to the Docker Repo property on the `Course Configuration` view.
 2) Go to `Github Management` and click on `Manage Course Container`.
 3) Click `Build Container`.
 4) Successful build logs will be created to display when the task finishes.
