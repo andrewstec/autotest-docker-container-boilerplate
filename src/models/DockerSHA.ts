@@ -10,6 +10,7 @@ export default interface DockerSHA {
   stdioRef: string;
   postbackOnComplete: boolean;
   courseNum: number;
+  customHtml: boolean;
   teamId: string;
   custom: object;
   githubKey: string; // to be removed instead of being logged in the DB.

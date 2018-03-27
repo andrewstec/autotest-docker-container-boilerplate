@@ -9,15 +9,16 @@ import FileReader from '../utils/FileReader';
 import HtmlGenerator from '../business/HtmlGenerator';
 import Network from '../utils/Network';
 
-const STUDENT_REPO_PATH = '/studentRepo';
+let STUDENT_REPO_PATH: string;
+if (process.env.IS_CONTAINER_LIVE === '1') {
+  STUDENT_REPO_PATH = '/studentRepo';
+} else {
+  STUDENT_REPO_PATH = '/output/studentRepo';
+}
 const DOCKER_SHA = '/output/docker_SHA.json';
 const RESULT_RECORD = '/output/result_record.json';
 const RUNTIME_CMD = process.argv[2];
 const START_GRADING = 'START_GRADING';
-
-/**
- * Hepler functions for Docker 210 Container Scripts
- */
 
 class ScriptController {
   private FileReader: FileReader = new FileReader();
@@ -48,8 +49,25 @@ class ScriptController {
         return new TestRunner(STUDENT_REPO_PATH, that.dockerSHA).createGradeReport();
       })
       .then((gradeReport: GradeReport) => {
-        // Step #5. Create Result Record based on GradeReport
         console.log('ScriptController::runGrader() STEP 4 - start');
+        // Step #4. If StaticHtml is enabled, produce HTML Report.
+        // if (this.dockerSHA.customHtml) {
+        if (true) {
+          const randomDir: string = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+          const zipFile = new HtmlGenerator(gradeReport).zip()
+            .then((zipFile) => {
+              return Network.sendStaticHtml(zipFile, randomDir)
+                .then((onfulfilled) => {
+                  console.log(onfulfilled);
+                  return onfulfilled;
+                });
+            });
+        }
+        return gradeReport;
+      })
+      .then((gradeReport: GradeReport) => {
+        // Step #5. Create Result Record based on GradeReport & HtmlGenerator
+        console.log('ScriptController::runGrader() STEP 5 - start');
 
         /**
          * Modify ResultRecord to add in if the GithubFeedback should be displayed to the student
@@ -101,10 +119,6 @@ class ScriptController {
       });
 
     const that = this;
-  }
-
-  private zipHtmlReport(): Promise<ZipFile> {
-    return new HtmlGenerator().zip();
   }
 
   private readContainerInput(): Promise<any[]> {

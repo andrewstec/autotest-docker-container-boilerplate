@@ -8,7 +8,7 @@ let apiPath: string;
 console.log('Network::apiPath() IS_CONTAINER_LIVE: ' + process.env.IS_CONTAINER_LIVE);
 
 if (typeof process.env.IS_CONTAINER_LIVE === 'undefined') {
-  apiPath = 'https://portal-dev.cs.ubc.ca:1210';
+  apiPath = 'https://localhost:1210';
 } else if (String(process.env.IS_CONTAINER_LIVE).indexOf('0') > -1) {
   // mac development mode with docker
   apiPath = 'https://portal-dev.cs.ubc.ca:1210';
@@ -62,7 +62,6 @@ export default class Network {
       json:    true
     };
     console.log(`${apiPath}/result`);
-    console.log(resultRecordPayload);
     return rp(options).then((data: ResultRecordResponseContainer ) => {
       console.log('Network::sendResultRecord() MongoDB Response: ', data.response);
       return data.response;
